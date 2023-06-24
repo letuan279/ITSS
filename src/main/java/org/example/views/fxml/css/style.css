@@ -1,0 +1,22 @@
+/* Style all buttons */
+.button {
+    -fx-background-color: #6F5CC2;
+    -fx-background-radius: 0em;
+}
+
+.button:hover {
+    -fx-border-color: #A89DDA;
+    -fx-cursor: hand;
+}
+
+.button:pressed
+{
+    -fx-background-color: #7156DD;
+}
+
+/* Style the focused button */
+.button:focused {
+    -fx-background-color: #7D6CC8;
+    -fx-border-color: #CDD1D6;
+    -fx-border-width: 0px 0px 0px 8px;
+}

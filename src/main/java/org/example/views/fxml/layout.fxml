@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="608.0" prefWidth="895.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <BorderPane layoutX="-2.0" layoutY="-1.0" prefHeight="608.0" prefWidth="908.0">
+         <left>
+            <VBox prefHeight="544.0" prefWidth="210.0" style="-fx-background-color: #7D6CC8;" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="homepageBtn" mnemonicParsing="false" prefHeight="51.0" prefWidth="271.0" stylesheets="@css/style.css" text="Trang chủ" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="cookBtn" mnemonicParsing="false" prefHeight="51.0" prefWidth="271.0" stylesheets="@css/style.css" text="Nấu ăn" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="recipeBtn" mnemonicParsing="false" prefHeight="51.0" prefWidth="271.0" stylesheets="@css/style.css" text="Công thức" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="groupBtn" mnemonicParsing="false" prefHeight="51.0" prefWidth="271.0" stylesheets="@css/style.css" text="Nhóm" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="adminBtn" mnemonicParsing="false" prefHeight="51.0" prefWidth="271.0" stylesheets="@css/style.css" text="Quản trị" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
+         </left>
+         <top>
+            <HBox alignment="CENTER_RIGHT" prefHeight="64.0" prefWidth="913.0" style="-fx-background-color: #52438F;" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="62.0" fitWidth="186.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/logo.png" />
+                     </image>
+                  </ImageView>
+                  <VBox prefHeight="64.0" prefWidth="604.0" />
+                  <Button fx:id="logoutBtn" mnemonicParsing="false" style="-fx-background-color: red; -fx-cursor: hand;" text="Đăng xuất" textFill="WHITE">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Button>
+               </children></HBox>
+         </top>
+         <center>
+            <AnchorPane fx:id="contentPage" prefHeight="534.0" prefWidth="690.0" BorderPane.alignment="CENTER" />
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

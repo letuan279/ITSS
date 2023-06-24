@@ -1,18 +1,22 @@
 package org.example.entity;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class User extends BaseEntity{
     private String username;
     private String password;
     private int role;
 
-    private User currentUser;
+    private static User currentUser;
 
-    public User getCurrentUser() {
+    public static User getCurrentUser() {
         return currentUser;
     }
 
-    public void setCurrentUser(User currentUser) {
-        this.currentUser = currentUser;
+    public static void setCurrentUser(User currentUser) {
+        User.currentUser = currentUser;
     }
 
     public int getRole() {
@@ -39,15 +43,31 @@ public class User extends BaseEntity{
         this.role = role;
     }
 
-    public User(String username, String password) {
+    public User(int id, String username, String password, int role) {
+        super(id);
         this.username = username;
         this.password = password;
+        this.role = role;
     }
 
-    public static Boolean login(String username, String password) {
+    public static Boolean login(String username, String password) throws SQLException {
         // Check user in DB
+        String query = "SELECT id, role FROM User WHERE username = ? AND password = ?";
+        PreparedStatement stmt = Database.getConnection().prepareStatement(query);
+        stmt.setString(1, username);
+        stmt.setString(2, password);
 
-        // Set current user
-        return true;
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            // User is found in the database
+            int userId = rs.getInt("id");
+            int role = rs.getInt("role");
+
+            // Set the current user
+            currentUser = new User(userId, username, password, role);
+            setCurrentUser(currentUser);
+            return true;
+        }
+        return false;
     }
 }

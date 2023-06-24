@@ -11,9 +11,9 @@ public class Database {
     public static Connection getConnection() {
         if(connect != null) return  connect;
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             connect = DriverManager.getConnection(Config.DB_URL, Config.DB_USERNAME, Config.DB_PASSWORD);
-            System.out.println("Connection is Successful to the database");
+            System.out.println("Connection is successful to the DB");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {

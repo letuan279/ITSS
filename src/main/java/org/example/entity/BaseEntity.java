@@ -16,6 +16,10 @@ public abstract class BaseEntity {
     public BaseEntity() {
     }
 
+    public BaseEntity(int id) {
+        this.id = id;
+    }
+
 //    abstract public List<BaseEntity> getAll();
 //    abstract public BaseEntity getById(int id);
 //    abstract public BaseEntity deleteById(int id);
