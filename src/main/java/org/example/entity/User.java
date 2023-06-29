@@ -1,15 +1,22 @@
 package org.example.entity;
 
+import javafx.beans.property.SimpleStringProperty;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class User extends BaseEntity{
+
     private String username;
     private String password;
     private int role;
 
     private static User currentUser;
+
+    public User() {}
+
+
 
     public static User getCurrentUser() {
         return currentUser;
