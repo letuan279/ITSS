@@ -4,14 +4,22 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.example.entity.Database;
 import org.example.entity.User;
+import org.example.utils.Config;
 import org.example.views.screen.BaseView;
+import org.example.views.screen.cook.CookViewHandler;
 
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -54,13 +62,22 @@ public class AdminViewHandler extends BaseView implements Initializable {
     @FXML
     private TextField txtRole;
 
+    @FXML
+    private Button cateBtn;
+
+    @FXML
+    AnchorPane mainContent;
+
 
     PreparedStatement pst;
     int myIndex;
     int id;
 
+
+
     @FXML
     void Add(ActionEvent event) {
+
         String id,name,password, role;
         name = txtName.getText();
         password = txtPassword.getText();
@@ -74,9 +91,9 @@ public class AdminViewHandler extends BaseView implements Initializable {
             pst.executeUpdate();
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("User Registation");
-            alert.setHeaderText("User Registation");
-            alert.setContentText("User Addedddd!");
+            alert.setTitle("Thêm User");
+            alert.setHeaderText("User");
+            alert.setContentText("Thêm!");
             alert.showAndWait();
             tableUser();
 
@@ -103,7 +120,7 @@ public class AdminViewHandler extends BaseView implements Initializable {
                 while (rs.next())
                 {
                     User st = new User();
-//                    st.setId(rs.getString("id"));
+                    st.setId(Integer.parseInt(rs.getString("id")));
                     st.setUsername(rs.getString("username"));
                     st.setPassword(rs.getString("password"));
                     users.add(st);
@@ -132,6 +149,9 @@ public class AdminViewHandler extends BaseView implements Initializable {
 
                     id = Integer.parseInt(String.valueOf(tableUser.getItems().get(myIndex).getId()));
                     txtName.setText(tableUser.getItems().get(myIndex).getUsername());
+                    txtPassword.setText(tableUser.getItems().get(myIndex).getPassword());
+                    txtId.setText(String.valueOf(tableUser.getItems().get(myIndex).getId()));
+                    txtRole.setText(String.valueOf(tableUser.getItems().get(myIndex).getRole()));
 //                    txtMobile.setText(table.getItems().get(myIndex).getMobile());
 //                    txtCourse.setText(table.getItems().get(myIndex).getCourse());
 
@@ -148,10 +168,63 @@ public class AdminViewHandler extends BaseView implements Initializable {
     @FXML
     void Delete(ActionEvent event) {
 
+
+        myIndex = tableUser.getSelectionModel().getSelectedIndex();
+
+        id = Integer.parseInt(String.valueOf(tableUser.getItems().get(myIndex).getId()));
+
+        try
+        {
+            pst = Database.getConnection().prepareStatement("delete from user where id = ? ");
+            pst.setInt(1, id);
+            pst.executeUpdate();
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Xác nhận xóa User");
+
+            alert.setHeaderText("User");
+            alert.setContentText("Bạn có chắc muốn xóa?");
+            alert.showAndWait();
+            tableUser();
+        }
+        catch (SQLException ex)
+        {
+            Logger.getLogger(AdminViewHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     @FXML
     void Update(ActionEvent event) {
+        String name,password,role;
+
+        myIndex = tableUser.getSelectionModel().getSelectedIndex();
+
+        id = Integer.parseInt(String.valueOf(tableUser.getItems().get(myIndex).getId()));
+
+        name = txtName.getText();
+        password = txtPassword.getText();
+        role = txtRole.getText();
+        try
+        {
+            pst = Database.getConnection().prepareStatement("update user set username = ? ,password = ?, role = ? where id = ? ");
+            pst.setString(1, name);
+            pst.setString(2, password);
+            pst.setString(3, role);
+            pst.setInt(4, id);
+            pst.executeUpdate();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Update user");
+
+            alert.setHeaderText("user");
+            alert.setContentText("Updateddd!");
+            alert.showAndWait();
+            tableUser();
+        }
+        catch (SQLException ex)
+        {
+            Logger.getLogger(AdminViewHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
@@ -159,9 +232,19 @@ public class AdminViewHandler extends BaseView implements Initializable {
         super(stage, screenPath);
     }
 
+     AnchorPane contentMain;
+
     public void initialize(URL arg0, ResourceBundle arg1) {
         Database.getConnection();
         tableUser();
+
+        cateBtn.setOnAction(actionEvent -> {
+
+//                txtName.setText("trooiosidosidosid");
+
+        });
+
+
 
     }
 }
