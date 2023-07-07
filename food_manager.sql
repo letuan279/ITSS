@@ -104,17 +104,18 @@ INSERT INTO `fridgeitem` (`id`, `categoryName`, `idGroup`, `idMarketItems`) VALU
 
 CREATE TABLE `group` (
   `id` int(10) UNSIGNED NOT NULL,
-  `name` varchar(255) NOT NULL
+  `name` varchar(255) NOT NULL,
+  `desc` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `group`
 --
 
-INSERT INTO `group` (`id`, `name`) VALUES
-(1, 'Gia đình A'),
-(2, 'Gia đình B'),
-(3, 'Gia đình C');
+INSERT INTO `group` (`id`, `name`, `desc`) VALUES
+(1, 'Gia đình A', 'nhà ngoại'),
+(2, 'Gia đình B', 'nhà nội'),
+(3, 'Gia đình C', 'nhà bác');
 
 -- --------------------------------------------------------
 

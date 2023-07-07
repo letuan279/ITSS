@@ -22,4 +22,6 @@ public class Config {
     static public final String RECIPE_PATH = "/recipe.fxml";
 
     static public final String GROUP_PATH = "/group.fxml";
+
+    static public final String ADD_USER_PATH = "/addUser.fxml";
 }

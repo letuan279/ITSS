@@ -1,5 +1,7 @@
 package org.example.entity;
 
+import javafx.beans.property.SimpleStringProperty;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,6 +45,11 @@ public class User extends BaseEntity{
         this.role = role;
     }
 
+    public User() {}
+    public User(int id, String username) {
+        super(id);
+        this.username = username;
+    }
     public User(int id, String username, String password, int role) {
         super(id);
         this.username = username;
