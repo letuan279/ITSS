@@ -1,10 +1,16 @@
 package org.example.entity;
 
+import javafx.beans.property.SimpleStringProperty;
+
+import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class User extends BaseEntity{
+public class User extends BaseEntity {
     private String username;
     private String password;
     private int role;
@@ -43,6 +49,14 @@ public class User extends BaseEntity{
         this.role = role;
     }
 
+    public User() {
+    }
+
+    public User(int id, String username) {
+        super(id);
+        this.username = username;
+    }
+
     public User(int id, String username, String password, int role) {
         super(id);
         this.username = username;
@@ -69,5 +83,83 @@ public class User extends BaseEntity{
             return true;
         }
         return false;
+    }
+
+    public static List<User> getListUsers() {
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        List<User> users = new ArrayList<>();
+        try {
+            Connection conn = Database.getConnection();
+            stmt = conn.prepareStatement("SELECT * FROM user");
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                int role = rs.getInt("role");
+                users.add(new User(id, username, password, role));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+    public static User addUser(String username, String password, int role) {
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        User user = null;
+        try {
+            Connection conn = Database.getConnection();
+            conn.setAutoCommit(false);
+            String sql = "INSERT INTO user (username,password,role) VALUES (?, ?, ?)";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            stmt.setInt(3, role);
+            stmt.executeUpdate();
+            rs = stmt.executeQuery("SELECT LAST_INSERT_ID()");
+            int idUser = 0;
+            if (rs.next()) {
+                idUser = rs.getInt(1);
+            }
+
+            conn.commit();
+            conn.setAutoCommit(true);
+
+            user = new User(idUser, username, password, role);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    public static void deleteUser(int id) {
+        PreparedStatement stmt = null;
+        try {
+            Connection conn = Database.getConnection();
+            String sql = "DELETE FROM user WHERE id = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateUser(User user) {
+        PreparedStatement stmt = null;
+        try {
+            Connection conn = Database.getConnection();
+            stmt = conn.prepareStatement("UPDATE `user` SET username = ?, `password` = ?, `role` = ? WHERE id = ?");
+            stmt.setString(1, user.getUsername());
+            stmt.setString(2, user.getPassword());
+            stmt.setInt(3, user.getRole());
+            stmt.setInt(5, user.getId());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
