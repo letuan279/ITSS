@@ -50,7 +50,7 @@ public class User extends BaseEntity{
         this.role = role;
     }
 
-    public User() {}
+//    public User() {}
     public User(int id, String username) {
         super(id);
         this.username = username;
