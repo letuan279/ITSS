@@ -1,6 +1,9 @@
 package org.example.entity;
 
+import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MarketItem extends BaseEntity{
     private int quantity;
@@ -88,5 +91,32 @@ public class MarketItem extends BaseEntity{
         this.expirationDate = expirationDate;
     }
 
-    
+
+    public static List<MarketItem> getListBoughtFood(int idFood){
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        List<MarketItem> listBoughtFoods = new ArrayList<>();
+        try{
+            Connection conn = Database.getConnection();
+            stmt = conn.prepareStatement("SELECT * FROM marketitem WHERE idUser IS NOT NULL");
+            stmt.setInt(1, idFood);
+            rs = stmt.executeQuery();
+            while (rs.next()){
+                int id = rs.getInt("id");
+                int quantity = rs.getInt("quantity");
+                String unit = rs.getString("unit");
+                String foodName = rs.getString("name");
+                int type = rs.getInt("type");
+                int idGroup = rs.getInt("idGroup");
+                LocalDate dayToBuy1 = rs.getDate("dayToBuy").toLocalDate();
+                User buyer = (User) rs.getObject("idUser");
+                int expirationDate = rs.getInt("expirationTime");
+                listBoughtFoods.add(new MarketItem(id,quantity,unit, foodName, type, idGroup, dayToBuy1, buyer, expirationDate));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return listBoughtFoods;
+    }
+
 }
