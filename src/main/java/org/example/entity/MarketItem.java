@@ -9,10 +9,10 @@ public class MarketItem extends BaseEntity{
     private int type;
     private int idGroup;
     private LocalDate dayToBuy;
-    private Integer idUser;
-    private LocalDate expirationDate;
+    private User buyer;
+    private int expirationDate;
 
-    public MarketItem(int id, int quantity, String unit, String name, int type, int idGroup, LocalDate dayToBuy, Integer idUser, LocalDate expirationDate) {
+    public MarketItem(int id, int quantity, String unit, String name, int type, int idGroup, LocalDate dayToBuy, User buyer, int expirationDate) {
         super(id);
         this.quantity = quantity;
         this.unit = unit;
@@ -20,7 +20,7 @@ public class MarketItem extends BaseEntity{
         this.type = type;
         this.idGroup = idGroup;
         this.dayToBuy = dayToBuy;
-        this.idUser = idUser;
+        this.buyer = buyer;
         this.expirationDate = expirationDate;
     }
 
@@ -72,19 +72,21 @@ public class MarketItem extends BaseEntity{
         this.dayToBuy = dayToBuy;
     }
 
-    public Integer getIdUser() {
-        return idUser;
+    public User getBuyer() {
+        return buyer;
     }
 
-    public void setIdUser(Integer idUser) {
-        this.idUser = idUser;
+    public void setBuyer(User buyer) {
+        this.buyer = buyer;
     }
 
-    public LocalDate getExpirationDate() {
+    public int getExpirationDate() {
         return expirationDate;
     }
 
-    public void setExpirationDate(LocalDate expirationDate) {
+    public void setExpirationDate(int expirationDate) {
         this.expirationDate = expirationDate;
     }
+
+    
 }
