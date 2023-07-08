@@ -130,25 +130,25 @@ CREATE TABLE `marketitem` (
   `name` char(255) NOT NULL,
   `type` smallint(6) NOT NULL,
   `idGroup` int(10) UNSIGNED NOT NULL,
-  `date` date NOT NULL,
+  `dayToBuy` date NOT NULL,
   `idUser` int(10) UNSIGNED DEFAULT NULL,
-  `expirationDate` date NOT NULL
+  `expirationTime` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `marketitem`
 --
 
-INSERT INTO `marketitem` (`id`, `quantity`, `unit`, `name`, `type`, `idGroup`, `date`, `idUser`, `expirationDate`) VALUES
-(1, 2, 'củ', 'Cà rốt', 1, 1, '2023-06-23', NULL, '2023-06-30'),
-(2, 1, 'miếng', 'Thịt bò', 2, 1, '2023-06-23', NULL, '2023-06-26'),
-(3, 3, 'quả', 'Táo', 4, 1, '2023-06-23', NULL, '2023-06-28'),
-(4, 2, 'cái', 'Chén đựng cơm', 6, 1, '2023-06-23', NULL, '2024-06-23'),
-(5, 1, 'hộp', 'Sữa tươi', 5, 2, '2023-06-23', NULL, '2023-06-27'),
-(6, 3, 'cái', 'Chuối', 4, 2, '2023-06-23', NULL, '2023-06-29'),
-(7, 1, 'chai', 'Nước mắm', 5, 2, '2023-06-23', NULL, '2024-06-23'),
-(8, 2, 'gói', 'Bánh quy', 6, 3, '2023-06-23', NULL, '2023-06-30'),
-(9, 1, 'kg', 'Tôm', 3, 3, '2023-06-23', NULL, '2023-06-26');
+INSERT INTO `marketitem` (`id`, `quantity`, `unit`, `name`, `type`, `idGroup`, `dayToBuy`, `idUser`, `expirationTime`) VALUES
+(1, 2, 'củ', 'Cà rốt', 1, 1, '2023-06-23', NULL, 1),
+(2, 1, 'miếng', 'Thịt bò', 2, 1, '2023-06-23', NULL, 2),
+(3, 3, 'quả', 'Táo', 4, 1, '2023-06-23', NULL, 3),
+(4, 2, 'cái', 'Chén đựng cơm', 6, 1, '2023-06-23', NULL, 1),
+(5, 1, 'hộp', 'Sữa tươi', 5, 2, '2023-06-23', NULL, 2),
+(6, 3, 'cái', 'Chuối', 4, 2, '2023-06-23', NULL, 5),
+(7, 1, 'chai', 'Nước mắm', 5, 2, '2023-06-23', NULL, 7),
+(8, 2, 'gói', 'Bánh quy', 6, 3, '2023-06-23', NULL, 6),
+(9, 1, 'kg', 'Tôm', 3, 3, '2023-06-23', NULL, 10);
 
 -- --------------------------------------------------------
 

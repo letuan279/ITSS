@@ -135,25 +135,25 @@ public class CookViewHandler extends BaseView implements Initializable {
 
     }
     private void updateRecord() {
-        String query = "UPDATE cook SET quantity = ?, foodName = ?, date = ?, timeToCook = ?, idUser = ? WHERE id = ?";
-        try {
-            PreparedStatement pst = Database.getConnection().prepareStatement(query);
+    String query = "UPDATE cook SET quantity = ?, foodName = ?, date = ?, timeToCook = ?, idUser = ? WHERE id = ?";
+    try {
+        PreparedStatement pst = Database.getConnection().prepareStatement(query);
 
-            pst.setString(1, txtQty.getText());
-            pst.setString(2, txtFood.getText());
-            pst.setString(3, txtDate.getText());
-            pst.setString(4, txtTime.getText());
-            pst.setString(5, txtUser.getText());
-            pst.setString(6, txtId1.getText());
+        pst.setString(1, txtQty.getText());
+        pst.setString(2, txtFood.getText());
+        pst.setString(3, txtDate.getText());
+        pst.setString(4, txtTime.getText());
+        pst.setString(5, txtUser.getText());
+        pst.setString(6, txtId1.getText());
 
-            pst.executeUpdate();
-            pst.close();
-            tableCook();
-        } catch (SQLException e) {
-            System.err.println(e);
-        }
-
+        pst.executeUpdate();
+        pst.close();
+        tableCook();
+    } catch (SQLException e) {
+        System.err.println(e);
     }
+
+}
     private void deleteButton() {
         String query = "DELETE FROM cook WHERE id = ?";
         try {

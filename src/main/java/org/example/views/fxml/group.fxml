@@ -7,18 +7,18 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@css/table.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="534.0" prefWidth="690.0" stylesheets="@css/table.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <Text layoutX="15.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Danh sách nhóm">
          <font>
             <Font name="System Bold" size="23.0" />
          </font></Text>
-      <TableView fx:id="table" layoutX="15.0" layoutY="68.0" prefHeight="325.0" prefWidth="578.0">
+      <TableView fx:id="table" layoutX="15.0" layoutY="68.0" prefHeight="450.0" prefWidth="669.0">
         <columns>
           <TableColumn fx:id="stt" prefWidth="61.0" text="STT" />
           <TableColumn fx:id="name" prefWidth="172.0" text="Tên nhóm" />
             <TableColumn fx:id="desc" prefWidth="184.0" text="Mô tả" />
-            <TableColumn fx:id="act" prefWidth="160.0" text="Thao tác" />
+            <TableColumn fx:id="act" prefWidth="249.0" text="Thao tác" />
         </columns>
       </TableView>
       <Button fx:id="add_btn" layoutX="206.0" layoutY="29.0" mnemonicParsing="false" text="Thêm" />
