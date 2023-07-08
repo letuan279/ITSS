@@ -21,22 +21,22 @@
             </columns>
         </TableView>
 
-      <TextField fx:id="txtQty" layoutX="147.0" layoutY="272.0" prefWidth="151.0" />
-      <TextField fx:id="txtFood" layoutX="147.0" layoutY="304.0" />
-      <TextField fx:id="txtDate" layoutX="147.0" layoutY="338.0" />
-      <TextField fx:id="txtTime" layoutX="147.0" layoutY="373.0" />
-      <TextField fx:id="txtUser" layoutX="147.0" layoutY="406.0" />
-      <Label layoutX="55.0" layoutY="276.0" text="Quantity" />
-      <Label layoutX="54.0" layoutY="309.0" text="Food Name" />
-      <Label layoutX="54.0" layoutY="342.0" text="Date" />
-      <Label layoutX="59.0" layoutY="377.0" text="Time To Cook" />
-      <Label layoutX="60.0" layoutY="410.0" text="IDUser" />
-      <Button fx:id="btnInsert" layoutX="52.0" layoutY="233.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="27.0" prefWidth="55.0" text="Add" />
-      <Button fx:id="btnUpdate" layoutX="187.0" layoutY="234.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Update" />
-      <Button fx:id="btnDelete" layoutX="400.0" layoutY="278.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="55.0" text="Delete" />
-      <TextField fx:id="txtId" layoutX="494.0" layoutY="278.0" prefHeight="26.0" prefWidth="26.0" />
-      <Text layoutX="467.0" layoutY="295.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" />
-      <Text layoutX="252.0" layoutY="251.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" />
-      <TextField fx:id="txtId1" layoutX="273.0" layoutY="233.0" prefHeight="26.0" prefWidth="26.0" />
+        <TextField fx:id="txtQty" layoutX="147.0" layoutY="272.0" prefWidth="151.0" />
+        <TextField fx:id="txtFood" layoutX="147.0" layoutY="304.0" />
+        <TextField fx:id="txtDate" layoutX="147.0" layoutY="338.0" />
+        <TextField fx:id="txtTime" layoutX="147.0" layoutY="373.0" />
+        <TextField fx:id="txtUser" layoutX="147.0" layoutY="406.0" />
+        <Label layoutX="55.0" layoutY="276.0" text="Quantity" />
+        <Label layoutX="54.0" layoutY="309.0" text="Food Name" />
+        <Label layoutX="54.0" layoutY="342.0" text="Date" />
+        <Label layoutX="59.0" layoutY="377.0" text="Time To Cook" />
+        <Label layoutX="60.0" layoutY="410.0" text="IDUser" />
+        <Button fx:id="btnInsert" layoutX="52.0" layoutY="233.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="27.0" prefWidth="55.0" text="Add" />
+        <Button fx:id="btnUpdate" layoutX="187.0" layoutY="234.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Update" />
+        <Button fx:id="btnDelete" layoutX="400.0" layoutY="278.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="55.0" text="Delete" />
+        <TextField fx:id="txtId" layoutX="494.0" layoutY="278.0" prefHeight="26.0" prefWidth="26.0" />
+        <Text layoutX="467.0" layoutY="295.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" />
+        <Text layoutX="252.0" layoutY="251.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" />
+        <TextField fx:id="txtId1" layoutX="273.0" layoutY="233.0" prefHeight="26.0" prefWidth="26.0" />
     </children>
 </AnchorPane>

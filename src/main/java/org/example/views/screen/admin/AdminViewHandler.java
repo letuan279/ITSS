@@ -232,7 +232,7 @@ public class AdminViewHandler extends BaseView implements Initializable {
         super(stage, screenPath);
     }
 
-     AnchorPane contentMain;
+    AnchorPane contentMain;
 
     public void initialize(URL arg0, ResourceBundle arg1) {
         Database.getConnection();

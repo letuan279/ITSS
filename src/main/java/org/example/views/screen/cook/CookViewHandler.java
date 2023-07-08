@@ -86,17 +86,17 @@ public class CookViewHandler extends BaseView implements Initializable {
             pst = Database.getConnection().prepareStatement("select * from cook");
             ResultSet rs = pst.executeQuery();
 
-                while (rs.next())
-                {
-                    cooks.add(new Cook(
-                            rs.getInt("id"),
-                            rs.getInt("quantity"),
-                            rs.getString("foodName"),
-                            rs.getDate("date"),
-                            rs.getInt("timeToCook"),
-                            rs.getInt("idUser")));
+            while (rs.next())
+            {
+                cooks.add(new Cook(
+                        rs.getInt("id"),
+                        rs.getInt("quantity"),
+                        rs.getString("foodName"),
+                        rs.getDate("date"),
+                        rs.getInt("timeToCook"),
+                        rs.getInt("idUser")));
 
-                }
+            }
 
             tableCook.setItems(cooks);
             idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -135,25 +135,25 @@ public class CookViewHandler extends BaseView implements Initializable {
 
     }
     private void updateRecord() {
-        String query = "UPDATE cook SET quantity = ?, foodName = ?, date = ?, timeToCook = ?, idUser = ? WHERE id = ?";
-        try {
-            PreparedStatement pst = Database.getConnection().prepareStatement(query);
+    String query = "UPDATE cook SET quantity = ?, foodName = ?, date = ?, timeToCook = ?, idUser = ? WHERE id = ?";
+    try {
+        PreparedStatement pst = Database.getConnection().prepareStatement(query);
 
-            pst.setString(1, txtQty.getText());
-            pst.setString(2, txtFood.getText());
-            pst.setString(3, txtDate.getText());
-            pst.setString(4, txtTime.getText());
-            pst.setString(5, txtUser.getText());
-            pst.setString(6, txtId1.getText());
+        pst.setString(1, txtQty.getText());
+        pst.setString(2, txtFood.getText());
+        pst.setString(3, txtDate.getText());
+        pst.setString(4, txtTime.getText());
+        pst.setString(5, txtUser.getText());
+        pst.setString(6, txtId1.getText());
 
-            pst.executeUpdate();
-            pst.close();
-            tableCook();
-        } catch (SQLException e) {
-            System.err.println(e);
-        }
-
+        pst.executeUpdate();
+        pst.close();
+        tableCook();
+    } catch (SQLException e) {
+        System.err.println(e);
     }
+
+}
     private void deleteButton() {
         String query = "DELETE FROM cook WHERE id = ?";
         try {
