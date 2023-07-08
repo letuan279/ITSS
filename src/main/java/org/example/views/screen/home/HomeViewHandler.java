@@ -13,8 +13,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import org.example.entity.Database;
 import org.example.entity.Group;
 import org.example.entity.MarketItem;
+import org.example.entity.User;
 import org.example.views.screen.BaseView;
 
 import javax.sound.midi.ShortMessage;
@@ -22,8 +24,13 @@ import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class HomeViewHandler extends BaseView implements Initializable {
 
@@ -50,7 +57,6 @@ public class HomeViewHandler extends BaseView implements Initializable {
     @FXML
     private TableColumn<MarketItem, String> timebuyCol2;
 
-    // For the table express whether the food had been bought or not
     ObservableList<MarketItem> BoughtFoodList = FXCollections.observableArrayList();
     List<MarketItem> boughtFoodList;
 
@@ -58,7 +64,7 @@ public class HomeViewHandler extends BaseView implements Initializable {
     ObservableList<MarketItem> ExpirationSoonList = FXCollections.observableArrayList();
     List<MarketItem> expirationSoonList;
 
-    String query = null;
+    PreparedStatement query = null;
     Connection connection = null;
 
 
@@ -69,11 +75,35 @@ public class HomeViewHandler extends BaseView implements Initializable {
     public void initialize(URL arg0, ResourceBundle arg1) {
         homeTitle.setText("Trang chủ");
 
+        connection = Database.getConnection();
 
-//        sttCol1.setCellValueFactory(new PropertyValueFactory<MarketItem, String>("id"));
-        foodnameCol1.setCellValueFactory(new PropertyValueFactory<MarketItem, String>("name"));
-        quantityCol1.setCellValueFactory(new PropertyValueFactory<MarketItem, String>("quantity"));
-        timebuyCol1.setCellValueFactory(new PropertyValueFactory<MarketItem, String>("dayToBuy"));
-        boughtfoodTable.setItems(BoughtFoodList);
+        try {
+            query = Database.getConnection().prepareStatement("SELECT * FROM `marketitem` WHERE idUser IS NOT NULL;");
+            ResultSet rs = query.executeQuery();
+
+            while (rs.next()){
+                BoughtFoodList.add(new MarketItem(
+                        rs.getInt("id"),
+                        rs.getInt("quantity"),
+                        rs.getString("unit"),
+                        rs.getString("name"),
+                        rs.getInt("type"),
+                        rs.getInt("idGroup"),
+                        rs.getDate("dayToBuy").toLocalDate(),
+                        (User) rs.getObject("buyer"),
+                        rs.getInt("expirationDate"))
+                );
+            }
+            boughtfoodTable.setItems(BoughtFoodList);
+            sttCol1.setCellValueFactory(new PropertyValueFactory<>("id"));
+            foodnameCol1.setCellValueFactory(new PropertyValueFactory<>("name"));
+            quantityCol1.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+            timebuyCol1.setCellValueFactory(new PropertyValueFactory<>("dayToBuy"));
+
+        }catch (SQLException ex){
+            System.err.println(ex);
+        }
+
+//
     }
 }
