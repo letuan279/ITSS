@@ -6,7 +6,6 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.example.controllers.LoginController;
-import org.example.entity.User;
 import org.example.utils.Config;
 import org.example.views.screen.BaseView;
 import org.example.views.screen.admin.AdminViewHandler;
@@ -47,20 +46,10 @@ public class LayoutViewHandler extends BaseView implements Initializable {
             HomeViewHandler homeHandler = new HomeViewHandler(stage, Config.HOME_PATH);
             AnchorPane homepageContent = homeHandler.content;
             contentPage.getChildren().setAll(homepageContent);
-            homepageBtn.setStyle("-fx-background-color: #7D6CC8; -fx-border-color: #CDD1D6; -fx-border-width: 0px 0px 0px 8px;");
-            cookBtn.setStyle("");
-            groupBtn.setStyle("");
-            recipeBtn.setStyle("");
-            adminBtn.setStyle("");
 
             // Set action for sidebar
             homepageBtn.setOnAction(e -> {
                 contentPage.getChildren().setAll(homepageContent);
-                homepageBtn.setStyle("-fx-background-color: #7D6CC8; -fx-border-color: #CDD1D6; -fx-border-width: 0px 0px 0px 8px;");
-                cookBtn.setStyle("");
-                groupBtn.setStyle("");
-                recipeBtn.setStyle("");
-                adminBtn.setStyle("");
             });
 
             cookBtn.setOnAction(e -> {
@@ -68,11 +57,6 @@ public class LayoutViewHandler extends BaseView implements Initializable {
                     CookViewHandler cookHandler = new CookViewHandler(stage, Config.COOK_PATH);
                     AnchorPane cookContent = cookHandler.content;
                     contentPage.getChildren().setAll(cookContent);
-                    cookBtn.setStyle("-fx-background-color: #7D6CC8; -fx-border-color: #CDD1D6; -fx-border-width: 0px 0px 0px 8px;");
-                    homepageBtn.setStyle("");
-                    groupBtn.setStyle("");
-                    recipeBtn.setStyle("");
-                    adminBtn.setStyle("");
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -83,11 +67,6 @@ public class LayoutViewHandler extends BaseView implements Initializable {
                     GroupViewHandler groupHandler = new GroupViewHandler(stage, Config.GROUP_PATH);
                     AnchorPane groupContent = groupHandler.content;
                     contentPage.getChildren().setAll(groupContent);
-                    groupBtn.setStyle("-fx-background-color: #7D6CC8; -fx-border-color: #CDD1D6; -fx-border-width: 0px 0px 0px 8px;");
-                    homepageBtn.setStyle("");
-                    cookBtn.setStyle("");
-                    recipeBtn.setStyle("");
-                    adminBtn.setStyle("");
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -98,11 +77,6 @@ public class LayoutViewHandler extends BaseView implements Initializable {
                     RecipeViewHandler recipeHandler = new RecipeViewHandler(stage, Config.RECIPE_PATH);
                     AnchorPane recipeContent = recipeHandler.content;
                     contentPage.getChildren().setAll(recipeContent);
-                    recipeBtn.setStyle("-fx-background-color: #7D6CC8; -fx-border-color: #CDD1D6; -fx-border-width: 0px 0px 0px 8px;");
-                    homepageBtn.setStyle("");
-                    cookBtn.setStyle("");
-                    groupBtn.setStyle("");
-                    adminBtn.setStyle("");
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -113,11 +87,6 @@ public class LayoutViewHandler extends BaseView implements Initializable {
                     AdminViewHandler adminHandler = new AdminViewHandler(stage, Config.ADMIN_PATH);
                     AnchorPane adminContent = adminHandler.content;
                     contentPage.getChildren().setAll(adminContent);
-                    adminBtn.setStyle("-fx-background-color: #7D6CC8; -fx-border-color: #CDD1D6; -fx-border-width: 0px 0px 0px 8px;");
-                    homepageBtn.setStyle("");
-                    cookBtn.setStyle("");
-                    groupBtn.setStyle("");
-                    recipeBtn.setStyle("");
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -133,10 +102,6 @@ public class LayoutViewHandler extends BaseView implements Initializable {
                 }
                 LoginHandler.show();
             });
-
-            if(User.getCurrentUser().getRole() == 0) {
-                adminBtn.setVisible(false);
-            }
 
         } catch (IOException e) {
             throw new RuntimeException(e);
