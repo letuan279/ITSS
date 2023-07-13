@@ -19,18 +19,25 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import javafx.util.StringConverter;
+import org.example.controllers.BaseController;
 import org.example.controllers.GroupController;
+import org.example.controllers.MarketItemController;
 import org.example.entity.Group;
+import org.example.entity.MarketItem;
 import org.example.entity.User;
 import org.example.views.screen.BaseView;
 
 import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class GroupViewHandler extends BaseView implements Initializable {
     @FXML
@@ -224,7 +231,7 @@ public class GroupViewHandler extends BaseView implements Initializable {
 
         // Hiển thị hộp thoại
         Optional<Group> result = dialog.showAndWait();
-        if (result.isPresent()) {
+        if (result.isPresent() && result.get() != null) {
             ObservableList<User> selectedUsers = memberField.getSelectionModel().getSelectedItems();
             List<Integer> userIds = new ArrayList<>();
             for(User user : selectedUsers) {
@@ -312,7 +319,7 @@ public class GroupViewHandler extends BaseView implements Initializable {
             listView.getItems().addAll(users);
             listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-            Dialog<Group> dialog = new Dialog<>();
+            Dialog<User> dialog = new Dialog<>();
             dialog.setTitle("Chọn thành viên để thêm");
 
             ButtonType saveButtonType = new ButtonType("Lưu", ButtonBar.ButtonData.OK_DONE);
@@ -344,8 +351,8 @@ public class GroupViewHandler extends BaseView implements Initializable {
             dialog.getDialogPane().setContent(grid);
 
             // Hiển thị hộp thoại
-            Optional<Group> result = dialog.showAndWait();
-            if (result.isPresent()) {
+            Optional<User> result = dialog.showAndWait();
+            if (result.isPresent() && result.get() != null) {
                 ObservableList<User> selectedUsers = listView.getSelectionModel().getSelectedItems();
                 List<Integer> userIds = new ArrayList<>();
                 for(User user : selectedUsers) {
@@ -372,12 +379,257 @@ public class GroupViewHandler extends BaseView implements Initializable {
 
     public void handleMarket(Group group) {
         // Hiển thị thông tin
-        TableColumn<User, String> stt = new TableColumn<>("STT");
+        MarketItemController marketItemController = new MarketItemController();
+        List<MarketItem> marketItems = marketItemController.getAllInGroup(group.getId());
+        TableView<MarketItem> tableView = new TableView<>();
+        ObservableList<MarketItem> marketItemsList = FXCollections.observableArrayList(marketItems);
+        tableView.setItems(marketItemsList);
 
-        TableColumn<User, String> nameColumn = new TableColumn<>("Tên thành viên");
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
-        TableColumn<User, String> roleColumn = new TableColumn<>("Vai trò");
-        TableColumn<User, String> act = new TableColumn<>("Thao tác");
+        TableColumn<MarketItem, String> stt = new TableColumn<>("STT");
+        TableColumn<MarketItem, String> nameColumn = new TableColumn<>("Tên");
+        TableColumn<MarketItem, String> quantityColumn = new TableColumn<>("Số lượng");
+        TableColumn<MarketItem, String> unitColumn = new TableColumn<>("Đơn vị");
+        TableColumn<MarketItem, String> dayToBuyColumn = new TableColumn<>("Ngày mua");
+        TableColumn<MarketItem, String> buyerColumn = new TableColumn<>("Người mua");
+        TableColumn<MarketItem, String> stateColumn = new TableColumn<>("Trạng thái");
+        TableColumn<MarketItem, String> act = new TableColumn<>("Thao tác");
+
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        unitColumn.setCellValueFactory(new PropertyValueFactory<>("unit"));
+        dayToBuyColumn.setCellValueFactory(new PropertyValueFactory<>("dayToBuy"));
+
+        stt.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<MarketItem, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<MarketItem, String> param) {
+                return new ReadOnlyObjectWrapper<>(tableView.getItems().indexOf(param.getValue()) + 1 + "");
+            }
+        });
+        buyerColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<MarketItem, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<MarketItem, String> cellData) {
+                User buyer = cellData.getValue().getBuyer();
+                if(buyer == null) return new SimpleStringProperty("Chưa có");
+                return new SimpleStringProperty(cellData.getValue().getBuyer().getUsername());
+            }
+        });
+        stateColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<MarketItem, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<MarketItem, String> cellData) {
+                int state = cellData.getValue().getState();
+                if(state == 0) return new SimpleStringProperty("Chưa mua");
+                return new SimpleStringProperty("Đã mua");
+            }
+        });
+        Callback<TableColumn<MarketItem, String>, TableCell<MarketItem, String>> cellFactory = (TableColumn<MarketItem, String> param) -> {
+            final TableCell<MarketItem, String> cell = new TableCell<MarketItem, String>() {
+                @Override
+                public void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                        setText(null);
+
+                    } else {
+                        Button buyIcon = new Button("Đã mua");
+
+                        buyIcon.setOnMouseClicked((MouseEvent event) -> {
+                            handleBuy(getTableView().getItems().get(getIndex()).getId(), marketItemController);
+                            // Cập nhật lại bảng
+
+                        });
+
+                        if(getTableView().getItems().get(getIndex()).getBuyer() == null){
+                            HBox managebtn = new HBox(buyIcon);
+                            managebtn.setStyle("-fx-alignment:center");
+                            HBox.setMargin(buyIcon, new Insets(2, 2, 0, 3));
+                            setGraphic(managebtn);
+                            setText(null);
+                        }
+                    }
+                }
+
+            };
+            return cell;
+        };
+        act.setCellFactory(cellFactory);
+        tableView.getColumns().addAll(stt, nameColumn, quantityColumn, unitColumn, dayToBuyColumn, buyerColumn, stateColumn, act);
+
+        DatePicker datePicker = new DatePicker(LocalDate.now());
+        List<MarketItem> firstMarketItems = marketItems.stream()
+                .filter(marketItem -> marketItem.getDayToBuy().isEqual(LocalDate.now()))
+                .collect(Collectors.toList());
+        tableView.setItems(FXCollections.observableArrayList(firstMarketItems));
+        datePicker.setConverter(new StringConverter<LocalDate>() {
+            String pattern = "yyyy/MM/dd";
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+
+            {
+                datePicker.setPromptText(pattern.toLowerCase());
+            }
+
+            @Override
+            public String toString(LocalDate date) {
+                if (date != null) {
+                    return dateFormatter.format(date);
+                } else {
+                    return "";
+                }
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                if (string != null && !string.isEmpty()) {
+                    return LocalDate.parse(string, dateFormatter);
+                } else {
+                    return null;
+                }
+            }
+        });
+
+        ObservableList<MarketItem> filteredMarketItemsList = FXCollections.observableArrayList(marketItems);
+        datePicker.setOnAction(event -> {
+            LocalDate selectedDate = datePicker.getValue();
+            List<MarketItem> filteredMarketItems = marketItems.stream()
+                    .filter(marketItem -> marketItem.getDayToBuy().isEqual(selectedDate))
+                    .collect(Collectors.toList());
+            filteredMarketItemsList.setAll(filteredMarketItems);
+            tableView.setItems(filteredMarketItemsList);
+        });
+
+        Button addButton = new Button("Thêm món ăn cần mua");
+        addButton.setOnAction(event -> {
+            MarketItem newMarketItem = handleAddNewBuyItem(marketItemController, group.getId());
+            if(newMarketItem != null){
+                marketItems.add(newMarketItem);
+                List<MarketItem> filteredMarketItems = marketItems.stream()
+                        .filter(marketItem -> marketItem.getDayToBuy().isEqual(LocalDate.now()))
+                        .collect(Collectors.toList());
+                tableView.setItems(FXCollections.observableArrayList(filteredMarketItems));
+            }
+        });
+
+        HBox hbox = new HBox(datePicker, addButton);
+        hbox.setAlignment(Pos.CENTER_RIGHT);
+        hbox.setPadding(new Insets(10));
+        VBox vbox = new VBox(hbox, tableView);
+        Stage modalStage = new Stage();
+        modalStage.initModality(Modality.APPLICATION_MODAL);
+        modalStage.setScene(new Scene(vbox));
+        modalStage.showAndWait();
+    }
+
+    public void handleBuy(int idMarketItem, BaseController controller) {
+        // Cần nhập: Thời hạn, trạng thái
+
+
+    }
+
+    public MarketItem handleAddNewBuyItem(BaseController controller, int idGroup) {
+        // Hiện hộp thoại thêm các trường: Tên, số lượng, đơn vị, kiểu, ngày mua
+        // Tạo hộp thoại
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Thêm món đồ định mua");
+
+        // Thiết lập nút "Thêm" và "Hủy"
+        ButtonType addButton = new ButtonType("Thêm", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(addButton, ButtonType.CANCEL);
+
+        // Tạo các trường nhập liệu
+        TextField nameField = new TextField();
+        nameField.setPromptText("Tên món đồ");
+        TextField quantityField = new TextField();
+        quantityField.setPromptText("Số lượng");
+        TextField unitField = new TextField();
+        unitField.setPromptText("Đơn vị");
+        quantityField.setTextFormatter(new TextFormatter<>(change -> {
+            String newText = change.getControlNewText();
+            if (newText.matches("\\d*")) {
+                return change;
+            }
+            return null;
+        }));
+        ObservableList<String> typeOptions = FXCollections.observableArrayList("món ăn", "thực phẩm");
+        ChoiceBox<String> typeField = new ChoiceBox<>(typeOptions);
+        typeField.setValue("thực phẩm");
+
+        DatePicker dateField = new DatePicker(LocalDate.now());
+        dateField.setConverter(new StringConverter<LocalDate>() {
+            String pattern = "yyyy/MM/dd";
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+
+            {
+                dateField.setPromptText(pattern.toLowerCase());
+            }
+
+            @Override
+            public String toString(LocalDate date) {
+                if (date != null) {
+                    return dateFormatter.format(date);
+                } else {
+                    return "";
+                }
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                if (string != null && !string.isEmpty()) {
+                    return LocalDate.parse(string, dateFormatter);
+                } else {
+                    return null;
+                }
+            }
+        });
+        dateField.setValue(LocalDate.now());
+        dateField.setPromptText("Ngày mua");
+
+        // Tạo layout và thêm các trường nhập liệu
+        GridPane gridPane = new GridPane();
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+        gridPane.setPadding(new Insets(10));
+
+        Label nameLabel = new Label("Tên món đồ:");
+        gridPane.add(nameLabel, 0, 0);
+        gridPane.add(nameField, 1, 0);
+        Label quantityLabel = new Label("Số lượng:");
+        gridPane.add(quantityLabel, 0, 1);
+        gridPane.add(quantityField, 1, 1);
+
+        Label unitLabel = new Label("Đơn vị:");
+        gridPane.add(unitLabel, 0, 2);
+        gridPane.add(unitField, 1, 2);
+
+        Label typeLabel = new Label("Loại:");
+        gridPane.add(typeLabel, 0, 3);
+        gridPane.add(typeField, 1, 3);
+
+        Label dateLabel = new Label("Ngày mua:");
+        gridPane.add(dateLabel, 0, 4);
+        gridPane.add(dateField, 1, 4);
+        dialog.getDialogPane().setContent(gridPane);
+
+
+        // Hiển thị hộp thoại
+        Optional<ButtonType> result = dialog.showAndWait();
+        if (result.isPresent() && result.get() == addButton) {
+            String name = nameField.getText();
+            int quantity = Integer.parseInt(quantityField.getText());
+            String type = typeField.getValue();
+            LocalDate date = dateField.getValue();
+            String unit = unitField.getText();
+
+            MarketItem newMarketItem = ((MarketItemController) controller).addABuyMarketItem(
+                    idGroup,
+                    name,
+                    quantity,
+                    type,
+                    unit,
+                    date
+            );
+            return newMarketItem;
+        }
+        return null;
     }
 }
 

@@ -71,31 +71,6 @@ INSERT INTO `cook` (`id`, `quantity`, `foodName`, `date`, `timeToCook`, `idUser`
 
 -- --------------------------------------------------------
 
---
--- Table structure for table `fridgeitem`
---
-
-CREATE TABLE `fridgeitem` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `categoryName` char(255) NOT NULL,
-  `idGroup` int(10) UNSIGNED NOT NULL,
-  `idMarketItems` int(10) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `fridgeitem`
---
-
-INSERT INTO `fridgeitem` (`id`, `categoryName`, `idGroup`, `idMarketItems`) VALUES
-(1, 'Trái cây', 1, 1),
-(2, 'Thịt', 1, 2),
-(3, 'Rau củ', 1, 3),
-(4, 'Đồ uống', 1, 5),
-(5, 'Trái cây', 2, 6),
-(6, 'Đồ uống', 2, 7),
-(7, 'Đồ ăn vặt', 3, 8),
-(8, 'Cá', 3, 9);
-
 -- --------------------------------------------------------
 
 --
@@ -125,14 +100,15 @@ INSERT INTO `group` (`id`, `name`, `desc`) VALUES
 
 CREATE TABLE `marketitem` (
   `id` int(10) UNSIGNED NOT NULL,
-  `quantity` int(11) NOT NULL,
-  `unit` char(255) NOT NULL,
-  `name` char(255) NOT NULL,
-  `type` smallint(6) NOT NULL,
+  `quantity` int(11),
+  `unit` char(255),
+  `name` char(255),
+  `type` smallint(6),
   `idGroup` int(10) UNSIGNED NOT NULL,
   `dayToBuy` date NOT NULL,
   `idUser` int(10) UNSIGNED DEFAULT NULL,
-  `expirationTime` int NOT NULL
+  `expirationTime` int,
+  `state` int DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -215,7 +191,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `username`, `password`, `role`) VALUES
-(1, 'Quynh', '123456', 1),
+(1, 'q', '1', 1),
 (2, 'Ngoc', 'abcdef', 1),
 (3, 'Tuan', 'qwerty', 0),
 (4, 'Hieu', '123abc', 0),
@@ -238,14 +214,6 @@ ALTER TABLE `category`
 ALTER TABLE `cook`
   ADD PRIMARY KEY (`id`),
   ADD KEY `cook_iduser_foreign` (`idUser`);
-
---
--- Indexes for table `fridgeitem`
---
-ALTER TABLE `fridgeitem`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `fridgeitem_idmarketitems_foreign` (`idMarketItems`),
-  ADD KEY `fridgeitem_idgroup_foreign` (`idGroup`);
 
 --
 -- Indexes for table `group`
@@ -299,12 +267,6 @@ ALTER TABLE `cook`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `fridgeitem`
---
-ALTER TABLE `fridgeitem`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
---
 -- AUTO_INCREMENT for table `group`
 --
 ALTER TABLE `group`
@@ -343,13 +305,6 @@ ALTER TABLE `user`
 --
 ALTER TABLE `cook`
   ADD CONSTRAINT `cook_iduser_foreign` FOREIGN KEY (`idUser`) REFERENCES `user` (`id`);
-
---
--- Constraints for table `fridgeitem`
---
-ALTER TABLE `fridgeitem`
-  ADD CONSTRAINT `fridgeitem_idgroup_foreign` FOREIGN KEY (`idGroup`) REFERENCES `group` (`id`),
-  ADD CONSTRAINT `fridgeitem_idmarketitems_foreign` FOREIGN KEY (`idMarketItems`) REFERENCES `marketitem` (`id`);
 
 --
 -- Constraints for table `marketitem`

@@ -2,6 +2,7 @@ package org.example.entity;
 
 import javafx.beans.property.SimpleStringProperty;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -76,5 +77,22 @@ public class User extends BaseEntity{
             return true;
         }
         return false;
+    }
+
+    public static User getById(int id) {
+        User user = null;
+        try {
+            Connection conn = Database.getConnection();
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM user WHERE id = ?");
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                String name = rs.getString("username");
+                user = new User(id, name);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 }
