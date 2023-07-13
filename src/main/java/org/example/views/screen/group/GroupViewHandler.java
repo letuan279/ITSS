@@ -522,7 +522,6 @@ public class GroupViewHandler extends BaseView implements Initializable {
     public void handleBuy(int idMarketItem, BaseController controller) {
         // Cần nhập: Thời hạn, trạng thái
 
-
     }
 
     public MarketItem handleAddNewBuyItem(BaseController controller, int idGroup) {

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 23, 2023 at 03:44 PM
+-- Generation Time: Jul 13, 2023 at 08:35 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -71,8 +71,6 @@ INSERT INTO `cook` (`id`, `quantity`, `foodName`, `date`, `timeToCook`, `idUser`
 
 -- --------------------------------------------------------
 
--- --------------------------------------------------------
-
 --
 -- Table structure for table `group`
 --
@@ -100,31 +98,33 @@ INSERT INTO `group` (`id`, `name`, `desc`) VALUES
 
 CREATE TABLE `marketitem` (
   `id` int(10) UNSIGNED NOT NULL,
-  `quantity` int(11),
-  `unit` char(255),
-  `name` char(255),
-  `type` smallint(6),
+  `quantity` int(11) DEFAULT NULL,
+  `unit` char(255) DEFAULT NULL,
+  `name` char(255) DEFAULT NULL,
+  `type` smallint(6) DEFAULT NULL,
   `idGroup` int(10) UNSIGNED NOT NULL,
   `dayToBuy` date NOT NULL,
   `idUser` int(10) UNSIGNED DEFAULT NULL,
-  `expirationTime` int,
-  `state` int DEFAULT 0
+  `expirationTime` int(11) DEFAULT NULL,
+  `state` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `marketitem`
 --
 
-INSERT INTO `marketitem` (`id`, `quantity`, `unit`, `name`, `type`, `idGroup`, `dayToBuy`, `idUser`, `expirationTime`) VALUES
-(1, 2, 'củ', 'Cà rốt', 1, 1, '2023-06-23', NULL, 1),
-(2, 1, 'miếng', 'Thịt bò', 2, 1, '2023-06-23', NULL, 2),
-(3, 3, 'quả', 'Táo', 4, 1, '2023-06-23', NULL, 3),
-(4, 2, 'cái', 'Chén đựng cơm', 6, 1, '2023-06-23', NULL, 1),
-(5, 1, 'hộp', 'Sữa tươi', 5, 2, '2023-06-23', NULL, 2),
-(6, 3, 'cái', 'Chuối', 4, 2, '2023-06-23', NULL, 5),
-(7, 1, 'chai', 'Nước mắm', 5, 2, '2023-06-23', NULL, 7),
-(8, 2, 'gói', 'Bánh quy', 6, 3, '2023-06-23', NULL, 6),
-(9, 1, 'kg', 'Tôm', 3, 3, '2023-06-23', NULL, 10);
+INSERT INTO `marketitem` (`id`, `quantity`, `unit`, `name`, `type`, `idGroup`, `dayToBuy`, `idUser`, `expirationTime`, `state`) VALUES
+(1, 2, 'củ', 'Cà rốt', 1, 1, '2023-07-12', 1, 1, 2),
+(2, 1, 'miếng', 'Thịt bò', 1, 1, '2023-07-11', NULL, 2, 0),
+(3, 3, 'quả', 'Táo', 1, 1, '2023-07-12', NULL, 3, 0),
+(5, 1, 'hộp', 'Sữa tươi', 1, 2, '2023-07-11', NULL, 2, 0),
+(6, 3, 'cái', 'Chuối', 1, 2, '2023-07-12', NULL, 5, 0),
+(7, 1, 'chai', 'Nước mắm', 1, 2, '2023-07-11', NULL, 7, 0),
+(8, 2, 'gói', 'Bánh quy', 0, 3, '2023-07-12', NULL, 6, 0),
+(9, 1, 'kg', 'Tôm', 1, 3, '2023-07-12', NULL, 10, 0),
+(13, 1, 'củ', 'Cà tím', 1, 1, '2023-07-12', NULL, NULL, 0),
+(14, 1, 'quả', 'Cà chua', 1, 1, '2023-07-12', NULL, NULL, 0),
+(15, 2, 'mớ', 'Rau muống', 1, 1, '2023-07-12', NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -270,19 +270,19 @@ ALTER TABLE `cook`
 -- AUTO_INCREMENT for table `group`
 --
 ALTER TABLE `group`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `marketitem`
 --
 ALTER TABLE `marketitem`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `member`
 --
 ALTER TABLE `member`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `recipe`
